@@ -4,10 +4,8 @@ import { Card } from "./components/card";
 export default function App() {
   return (
     <View className="h-full flex justify-center items-center">
-      <Text className="text-blue-600">
-        This is styled with tailwind
-      </Text>
-      <Card suit="Heart" rank="10"/>
+      <Text className="text-blue-600">This is styled with tailwind</Text>
+      <Card rank="A" suit="H" />
     </View>
   );
 }
