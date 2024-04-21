@@ -3,10 +3,12 @@ import { Text, View, TouchableOpacity } from "react-native";
 import { Card } from "./components/card";
 import { Deck } from "./utils/deck";
 import { PlayerHand } from "./components/player_hand";
+import { CardType } from "./type/card";
 
 export default function App() {
   const [currentIndex, setCurrentIndex] = useState<number>(0);
-  const initialHand = Deck.slice(0, 20);
+  const initialHand = Deck.slice(1, 10);
+  const [discardPile, setDiscardPile] = useState<CardType[]>([Deck[0]]);
 
   const handleDraw = () => {
     const newIndex = Math.floor(Math.random() * 52);
@@ -25,6 +27,7 @@ export default function App() {
         <Text className="text-white">Draw</Text>
       </TouchableOpacity>
 
+      {discardPile.length > 0 && <Card card={discardPile[discardPile.length - 1]} />}
       <PlayerHand hand={initialHand} />
     </View>
   );
