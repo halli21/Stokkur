@@ -9,14 +9,16 @@ interface PlayerHandProps {
 export const PlayerHand = ({ hand }: PlayerHandProps) => {
   return (
     <FlatList
+      className="mt-64"
       horizontal
       data={hand}
       renderItem={({ item, index }) => (
         <View className="mx-1">
-          <Card key={item.id} card={item} />
+          <Card key={item.id} card={item} index={index} />
         </View>
       )}
       keyExtractor={(item) => item.id}
+      showsHorizontalScrollIndicator={false}
     />
   );
 };
