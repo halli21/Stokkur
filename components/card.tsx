@@ -6,5 +6,5 @@ interface CardProps {
 }
 
 export const Card = ({ card }: CardProps) => {
-  return <Image className="w-32 h-48" source={card.src} />;
+  return <Image className="w-16 h-24" source={card.src} />;
 };
