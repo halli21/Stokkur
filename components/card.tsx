@@ -1,4 +1,4 @@
-import { Image } from "react-native";
+import { Image, TouchableOpacity } from "react-native";
 import { CardType } from "../type/card";
 
 interface CardProps {
@@ -6,5 +6,9 @@ interface CardProps {
 }
 
 export const Card = ({ card }: CardProps) => {
-  return <Image className="w-16 h-24" source={card.src} />;
+  return (
+    <TouchableOpacity>
+      <Image className="w-16 h-24" source={card.src} />
+    </TouchableOpacity>
+  );
 };
