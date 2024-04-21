@@ -1,6 +1,7 @@
 import { View, FlatList } from "react-native";
 import { CardType } from "../type/card";
 import { Card } from "./card";
+import { Draggable } from "./draggable";
 
 interface PlayerHandProps {
   hand: CardType[];
