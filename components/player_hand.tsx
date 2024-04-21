@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, FlatList } from "react-native";
+import { View, FlatList } from "react-native";
 import { CardType } from "../type/card";
 import { Card } from "./card";
 

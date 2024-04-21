@@ -1,15 +1,12 @@
 import { TouchableOpacity, View, Text } from "react-native";
 import { PlayerHand } from "../components/player_hand";
 import { Card } from "./card";
-
 import { RootState } from "../context/store";
 import { useSelector, useDispatch } from "react-redux";
-
 import { drawCard } from "../context/reducers/gameSlice";
 
 export const Game = () => {
   const dispatch = useDispatch();
-  const deck = useSelector((state: RootState) => state.game.deck);
   const currentHand = useSelector((state: RootState) => state.game.currentHand);
   const discardPile = useSelector((state: RootState) => state.game.discardPile);
 
