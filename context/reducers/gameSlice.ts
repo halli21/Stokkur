@@ -5,12 +5,14 @@ import { Deck } from "../../utils/deck";
 interface GameState {
   deck: CardType[];
   currentHand: CardType[];
+  selectedCards: CardType[];
   discardPile: CardType[];
 }
 
 const initialState: GameState = {
   deck: Deck,
   currentHand: [],
+  selectedCards: [],
   discardPile: [],
 };
 
@@ -34,6 +36,21 @@ export const gameSlice = createSlice({
         state.discardPile.push(card);
       }
     },
+    selectCard(state: GameState, action: PayloadAction<number>) {
+      const cardIndex = action.payload;
+      if (cardIndex < 0 || cardIndex >= state.currentHand.length) return;
+
+      const card = state.currentHand[cardIndex];
+      const selectedIndex = state.selectedCards.findIndex(
+        (c) => c.id === card.id
+      );
+
+      if (selectedIndex >= 0) {
+        state.selectedCards.splice(selectedIndex, 1);
+      } else {
+        state.selectedCards.push(card);
+      }
+    },
     resetGame(state: GameState) {
       state.deck = [];
       state.currentHand = [];
@@ -42,5 +59,5 @@ export const gameSlice = createSlice({
   },
 });
 
-export const { drawCard, playCard, resetGame } = gameSlice.actions;
+export const { drawCard, playCard, selectCard, resetGame } = gameSlice.actions;
 export default gameSlice.reducer;

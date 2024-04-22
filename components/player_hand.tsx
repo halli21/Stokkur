@@ -10,16 +10,13 @@ interface PlayerHandProps {
 export const PlayerHand = ({ hand }: PlayerHandProps) => {
   return (
     <View>
-     
       <FlatList
-        className="mt-64"
+        className="mt-64 bg-black"
         horizontal
         data={hand}
         renderItem={({ item, index }) => (
           <View className="mx-1">
-            <DraggableComponent>
-              <Card key={item.id} card={item} index={index} />
-            </DraggableComponent>
+            <Card key={item.id} card={item} index={index} />
           </View>
         )}
         keyExtractor={(item) => item.id}
