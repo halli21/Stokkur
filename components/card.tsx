@@ -1,10 +1,12 @@
-import { Image, TouchableOpacity, StyleSheet } from "react-native";
+import { Image, TouchableOpacity, StyleSheet, View } from "react-native";
 import { CardType } from "../type/card";
 import { RootState } from "../context/store";
 import { useSelector, useDispatch } from "react-redux";
 
 import { playCard } from "../context/reducers/gameSlice";
 import { selectCard } from "../context/reducers/gameSlice";
+
+import { DraggableComponent } from "./draggable";
 
 interface CardProps {
   card: CardType;
@@ -21,13 +23,28 @@ export const Card = ({ card, index }: CardProps) => {
   );
 
   return (
-    <TouchableOpacity
-      onPress={() => dispatch(selectCard(index))}
-      className={`border-2 border-transparent rounded-md mt-3 ${
-        isSelected && "border-green-400 mt-0"
-      }`}
-    >
-      <Image className="w-16 h-24" source={card.src} />
-    </TouchableOpacity>
+    <View>
+      {isSelected ? (
+        <DraggableComponent>
+          <TouchableOpacity
+            onPress={() => dispatch(selectCard(index))}
+            className={`border-2 border-transparent rounded-md mt-3 ${
+              isSelected && "border-green-400 mt-0"
+            }`}
+          >
+            <Image className="w-16 h-24" source={card.src} />
+          </TouchableOpacity>
+        </DraggableComponent>
+      ) : (
+        <TouchableOpacity
+          onPress={() => dispatch(selectCard(index))}
+          className={`border-2 border-transparent rounded-md mt-3 ${
+            isSelected && "border-green-400 mt-0"
+          }`}
+        >
+          <Image className="w-16 h-24" source={card.src} />
+        </TouchableOpacity>
+      )}
+    </View>
   );
 };
