@@ -1,7 +1,6 @@
 import { View, FlatList } from "react-native";
 import { CardType } from "../type/card";
 import { Card } from "./card";
-import { DraggableComponent } from "./draggable";
 
 interface PlayerHandProps {
   hand: CardType[];
@@ -11,6 +10,7 @@ export const PlayerHand = ({ hand }: PlayerHandProps) => {
   return (
     <FlatList
       className="mt-64 bg-black"
+      style={{ flexGrow: 0, overflow: "visible" }}
       horizontal
       data={hand}
       renderItem={({ item, index }) => (
@@ -20,6 +20,7 @@ export const PlayerHand = ({ hand }: PlayerHandProps) => {
       )}
       keyExtractor={(item) => item.id}
       showsHorizontalScrollIndicator={false}
+      centerContent={true}
     />
   );
 };
