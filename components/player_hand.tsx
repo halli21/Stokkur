@@ -9,7 +9,7 @@ interface PlayerHandProps {
 export const PlayerHand = ({ hand }: PlayerHandProps) => {
   return (
     <FlatList
-      className="mt-64 bg-black"
+      className="bg-black"
       style={{ flexGrow: 0, overflow: "visible" }}
       horizontal
       data={hand}

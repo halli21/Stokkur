@@ -11,10 +11,10 @@ export const Game = () => {
   const discardPile = useSelector((state: RootState) => state.game.discardPile);
 
   return (
-    <View className="h-full flex justify-center items-center place-content-center">
+    <View className="h-full flex justify-center items-center">
       <TouchableOpacity
         className="bg-black
-          mt-5 px-10 py-5 rounded-lg"
+          px-10 py-5 rounded-lg"
         onPress={() => dispatch(drawCard())}
       >
         <Text className="text-white">Draw</Text>
