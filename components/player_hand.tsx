@@ -9,7 +9,8 @@ interface PlayerHandProps {
 export const PlayerHand = ({ hand }: PlayerHandProps) => {
   return (
     <FlatList
-      className="mt-64"
+      className="bg-black"
+      style={{ flexGrow: 0, overflow: "visible" }}
       horizontal
       data={hand}
       renderItem={({ item, index }) => (
@@ -19,6 +20,7 @@ export const PlayerHand = ({ hand }: PlayerHandProps) => {
       )}
       keyExtractor={(item) => item.id}
       showsHorizontalScrollIndicator={false}
+      centerContent={true}
     />
   );
 };
