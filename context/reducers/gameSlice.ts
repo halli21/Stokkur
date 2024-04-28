@@ -62,9 +62,22 @@ export const gameSlice = createSlice({
     shuffleDeck(state: GameState) {
       state.deck = shuffleArray([...state.deck]);
     },
+    pickUpDeck(state: GameState) {
+      if (state.discardPile.length > 0) {
+        state.currentHand = state.currentHand.concat(state.discardPile);
+        state.discardPile = [];
+        state.currentHand = sortCards([...state.currentHand]);
+      }
+    },
   },
 });
 
-export const { drawCard, playCard, selectCard, resetGame, shuffleDeck } =
-  gameSlice.actions;
+export const {
+  drawCard,
+  playCard,
+  selectCard,
+  resetGame,
+  shuffleDeck,
+  pickUpDeck,
+} = gameSlice.actions;
 export default gameSlice.reducer;
