@@ -17,6 +17,11 @@ export const Game = () => {
 
   return (
     <View className="h-full flex justify-center items-center">
+      <View className="m-3">
+        {discardPile.length > 0 && (
+          <Card card={discardPile[discardPile.length - 1]} index={9999} />
+        )}
+      </View>
       <TouchableOpacity
         className="bg-black
           px-10 py-5 rounded-lg"
@@ -26,9 +31,7 @@ export const Game = () => {
       </TouchableOpacity>
       <PlayerHand hand={currentHand} />
 
-      {discardPile.length > 0 && (
-        <Card card={discardPile[discardPile.length - 1]} index={9999} />
-      )}
+  
     </View>
   );
 };

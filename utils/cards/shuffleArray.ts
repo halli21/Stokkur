@@ -1,4 +1,4 @@
-import { CardType } from "../type/card";
+import { CardType } from "../../type/card";
 
 export default function shuffleArray(array: CardType[]) {
   for (let i = array.length - 1; i > 0; i--) {

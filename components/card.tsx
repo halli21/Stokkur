@@ -27,7 +27,7 @@ export const Card = ({ card, index }: CardProps) => {
       {isSelected ? (
         <DraggableComponent>
           <TouchableOpacity
-            onPress={() => dispatch(selectCard(index))}
+            onPress={() => dispatch(playCard(index))}
             className={`border-2 border-transparent rounded-md mt-3 ${
               isSelected && "border-green-400 mt-0"
             }`}
@@ -37,7 +37,7 @@ export const Card = ({ card, index }: CardProps) => {
         </DraggableComponent>
       ) : (
         <TouchableOpacity
-          onPress={() => dispatch(selectCard(index))}
+          onPress={() => dispatch(playCard(index))}
           className={`border-2 border-transparent rounded-md mt-3 ${
             isSelected && "border-green-400 mt-0"
           }`}

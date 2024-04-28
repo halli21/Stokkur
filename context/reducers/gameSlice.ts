@@ -1,7 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { CardType } from "../../type/card";
 import { Deck } from "../../utils/deck";
-import shuffleArray from "../../utils/shuffleArray";
+import shuffleArray from "../../utils/cards/shuffleArray";
+import sortCards from "../../utils/cards/sortCards";
 
 interface GameState {
   deck: CardType[];
@@ -27,6 +28,7 @@ export const gameSlice = createSlice({
         const nextCard = state.deck.shift();
         if (nextCard) {
           state.currentHand.push(nextCard);
+          state.currentHand = sortCards([...state.currentHand]);
         }
       }
     },
