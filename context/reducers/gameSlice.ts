@@ -49,6 +49,11 @@ export const gameSlice = createSlice({
         state.currentHand.splice(cardIndex, 1);
         state.discardPile.push(cardToPlay);
       }
+
+      if (cardToPlay.rank === 10) {
+        state.discardPile = [];
+        return;
+      }
     },
     selectCard(state: GameState, action: PayloadAction<CardType>) {
       const cardToPlay = action.payload;

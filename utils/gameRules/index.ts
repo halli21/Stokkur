@@ -8,11 +8,12 @@ export default function canPlayCard(
     return true;
   }
 
-  // Magic cards TODO ~ 10
+  // Magic cards
   if (
     selectedCard.rank === 2 ||
     selectedCard.rank === 5 ||
-    selectedCard.rank === 9
+    selectedCard.rank === 9 ||
+    selectedCard.rank === 10
   ) {
     return true;
   }
@@ -34,7 +35,7 @@ export default function canPlayCard(
     return selectedCard.rank <= 5;
   }
 
-  if (topCard.rank < selectedCard.rank) {
+  if (topCard.rank <= selectedCard.rank) {
     return true;
   }
 
