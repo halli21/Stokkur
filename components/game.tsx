@@ -9,7 +9,6 @@ import { useEffect } from "react";
 export const Game = () => {
   const dispatch = useDispatch();
   const currentHand = useSelector((state: RootState) => state.game.currentHand);
-  const discardPile = useSelector((state: RootState) => state.game.discardPile);
 
   useEffect(() => {
     dispatch(shuffleDeck());
