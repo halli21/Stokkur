@@ -1,9 +1,6 @@
 import { CardType } from "../../type/card";
 
-export default function canPlayCard(
-  selectedCard: CardType,
-  playedCards: CardType[]
-) {
+export function canPlayCard(selectedCard: CardType, playedCards: CardType[]) {
   if (playedCards.length === 0) {
     return true;
   }
@@ -40,6 +37,18 @@ export default function canPlayCard(
   }
 
   return false;
+}
+
+// If four of the same rank is in a row the discard pile should be emptied
+export function checkForBomb(playedCards: CardType[]) {
+  const firstCardRank = playedCards[0].rank;
+
+  for (let i = 1; i < playedCards.length; i++) {
+    if (playedCards[i].rank !== firstCardRank) {
+      return false;
+    }
+  }
+  return true;
 }
 
 // Since 9 is invisible we need to find the card below to use as topCard,

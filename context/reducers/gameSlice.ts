@@ -3,8 +3,9 @@ import { CardType } from "../../type/card";
 import { Deck } from "../../utils/deck";
 import shuffleArray from "../../utils/cards/shuffleArray";
 import sortCards from "../../utils/cards/sortCards";
-import canPlayCard from "../../utils/gameRules";
+import { canPlayCard, checkForBomb } from "../../utils/gameRules";
 import { getLastFourCards } from "../../utils/cards";
+import { DiscardPile } from "../../components/discardPile";
 
 interface GameState {
   deck: CardType[];
@@ -52,7 +53,13 @@ export const gameSlice = createSlice({
 
       if (cardToPlay.rank === 10) {
         state.discardPile = [];
-        return;
+      } else if (state.discardPile.length > 3) {
+        console.log("checking 4 in a row");
+        const bombCards = getLastFourCards(state.discardPile);
+        const isBomb = checkForBomb(bombCards);
+        if (isBomb) {
+          state.discardPile = [];
+        }
       }
     },
     selectCard(state: GameState, action: PayloadAction<CardType>) {
