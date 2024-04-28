@@ -3,12 +3,17 @@ import { PlayerHand } from "../components/player_hand";
 import { Card } from "./card";
 import { RootState } from "../context/store";
 import { useSelector, useDispatch } from "react-redux";
-import { drawCard } from "../context/reducers/gameSlice";
+import { shuffleDeck, drawCard } from "../context/reducers/gameSlice";
+import { useEffect } from "react";
 
 export const Game = () => {
   const dispatch = useDispatch();
   const currentHand = useSelector((state: RootState) => state.game.currentHand);
   const discardPile = useSelector((state: RootState) => state.game.discardPile);
+
+  useEffect(() => {
+    dispatch(shuffleDeck());
+  });
 
   return (
     <View className="h-full flex justify-center items-center">
