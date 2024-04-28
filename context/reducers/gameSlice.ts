@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { CardType } from "../../type/card";
 import { Deck } from "../../utils/deck";
+import shuffleArray from "../../utils/shuffleArray";
 
 interface GameState {
   deck: CardType[];
@@ -56,8 +57,12 @@ export const gameSlice = createSlice({
       state.currentHand = [];
       state.discardPile = [];
     },
+    shuffleDeck(state: GameState) {
+      state.deck = shuffleArray([...state.deck]);
+    },
   },
 });
 
-export const { drawCard, playCard, selectCard, resetGame } = gameSlice.actions;
+export const { drawCard, playCard, selectCard, resetGame, shuffleDeck } =
+  gameSlice.actions;
 export default gameSlice.reducer;
