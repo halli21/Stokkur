@@ -1,0 +1,1 @@
+export type Suit = 'C' | 'D' | 'H' | 'S';

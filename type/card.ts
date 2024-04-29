@@ -1,8 +1,10 @@
 import { ImageSourcePropType } from "react-native";
 
+import { Suit } from "./suit";
+
 export interface CardType {
   id: string;
   rank: number;
-  suit: string;
+  suit: Suit;
   src: ImageSourcePropType;
 }

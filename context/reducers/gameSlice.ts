@@ -1,7 +1,10 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { CardType } from "../../type/card";
 import { Deck } from "../../utils/deck";
-import shuffleArray from "../../utils/shuffleArray";
+import shuffleArray from "../../utils/cards/shuffleArray";
+import sortCards from "../../utils/cards/sortCards";
+import { canPlayCard, checkForBomb } from "../../utils/gameRules";
+import { getLastFourCards } from "../../utils/cards";
 
 interface GameState {
   deck: CardType[];
@@ -27,29 +30,47 @@ export const gameSlice = createSlice({
         const nextCard = state.deck.shift();
         if (nextCard) {
           state.currentHand.push(nextCard);
+          state.currentHand = sortCards([...state.currentHand]);
         }
       }
     },
-    playCard(state: GameState, action: PayloadAction<number>) {
-      const cardIndex = action.payload;
-      if (cardIndex < state.currentHand.length && cardIndex >= 0) {
-        const card = state.currentHand.splice(cardIndex, 1)[0];
-        state.discardPile.push(card);
+    playCard(state: GameState, action: PayloadAction<CardType>) {
+      const latestCards = getLastFourCards(state.discardPile);
+      const cardToPlay = action.payload;
+
+      const playable = canPlayCard(cardToPlay, latestCards);
+
+      console.log(playable);
+
+      const cardIndex = state.currentHand.findIndex(
+        (card) => card.id === cardToPlay.id
+      );
+      if (cardIndex >= 0 && playable) {
+        state.currentHand.splice(cardIndex, 1);
+        state.discardPile.push(cardToPlay);
+      }
+
+      if (cardToPlay.rank === 10) {
+        state.discardPile = [];
+      } else if (state.discardPile.length > 3) {
+        console.log("checking 4 in a row");
+        const bombCards = getLastFourCards(state.discardPile);
+        const isBomb = checkForBomb(bombCards);
+        if (isBomb) {
+          state.discardPile = [];
+        }
       }
     },
-    selectCard(state: GameState, action: PayloadAction<number>) {
-      const cardIndex = action.payload;
-      if (cardIndex < 0 || cardIndex >= state.currentHand.length) return;
-
-      const card = state.currentHand[cardIndex];
+    selectCard(state: GameState, action: PayloadAction<CardType>) {
+      const cardToPlay = action.payload;
       const selectedIndex = state.selectedCards.findIndex(
-        (c) => c.id === card.id
+        (c) => c.id === cardToPlay.id
       );
 
       if (selectedIndex >= 0) {
         state.selectedCards.splice(selectedIndex, 1);
       } else {
-        state.selectedCards.push(card);
+        state.selectedCards.push(cardToPlay);
       }
     },
     resetGame(state: GameState) {
@@ -60,9 +81,22 @@ export const gameSlice = createSlice({
     shuffleDeck(state: GameState) {
       state.deck = shuffleArray([...state.deck]);
     },
+    pickUpDeck(state: GameState) {
+      if (state.discardPile.length > 0) {
+        state.currentHand = state.currentHand.concat(state.discardPile);
+        state.discardPile = [];
+        state.currentHand = sortCards([...state.currentHand]);
+      }
+    },
   },
 });
 
-export const { drawCard, playCard, selectCard, resetGame, shuffleDeck } =
-  gameSlice.actions;
+export const {
+  drawCard,
+  playCard,
+  selectCard,
+  resetGame,
+  shuffleDeck,
+  pickUpDeck,
+} = gameSlice.actions;
 export default gameSlice.reducer;
