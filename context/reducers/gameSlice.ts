@@ -5,7 +5,6 @@ import shuffleArray from "../../utils/cards/shuffleArray";
 import sortCards from "../../utils/cards/sortCards";
 import { canPlayCard, checkForBomb } from "../../utils/gameRules";
 import { getLastFourCards } from "../../utils/cards";
-import { DiscardPile } from "../../components/discardPile";
 
 interface GameState {
   deck: CardType[];
