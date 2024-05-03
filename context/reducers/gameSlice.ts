@@ -5,10 +5,12 @@ import shuffleArray from "../../utils/cards/shuffleArray";
 import sortCards from "../../utils/cards/sortCards";
 import { canPlayCard, checkForBomb } from "../../utils/gameRules";
 import { getLastFourCards } from "../../utils/cards";
+import { PositionMap } from "../../type/position";
 
 interface GameState {
   deck: CardType[];
   currentHand: CardType[];
+  tableCards: CardType[];
   selectedCards: CardType[];
   discardPile: CardType[];
 }
@@ -16,6 +18,7 @@ interface GameState {
 const initialState: GameState = {
   deck: Deck,
   currentHand: [],
+  tableCards: [],
   selectedCards: [],
   discardPile: [],
 };
@@ -25,6 +28,27 @@ export const gameSlice = createSlice({
   initialState,
 
   reducers: {
+    startGame(state: GameState) {
+      state.deck = shuffleArray([...state.deck]);
+      const drawHand = state.deck.splice(0, 3);
+      const drawTableCards = state.deck.splice(0, 6);
+      state.currentHand.push(...drawHand);
+      state.tableCards.push(...drawTableCards);
+    },
+    // Used in setup table, recieves a mapping of the new indexes of the cards, before game starts this needs to be set
+    setTableCardsPositions(
+      state: GameState,
+      action: PayloadAction<PositionMap>
+    ) {
+      // TODO: May need relocate this later
+      const newOrder = new Array(state.tableCards.length);
+
+      Object.entries(action.payload).forEach(([key, value]) => {
+        newOrder[value] = state.tableCards[parseInt(key)];
+      });
+
+      state.tableCards = newOrder;
+    },
     drawCard(state: GameState) {
       if (state.deck.length > 0) {
         const nextCard = state.deck.shift();
@@ -87,6 +111,8 @@ export const gameSlice = createSlice({
 });
 
 export const {
+  startGame,
+  setTableCardsPositions,
   drawCard,
   playCard,
   selectCard,
