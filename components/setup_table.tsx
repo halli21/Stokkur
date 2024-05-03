@@ -6,6 +6,7 @@ import { RootState } from "../context/store";
 import { setTableCardsPositions } from "../context/reducers/gameSlice";
 import { useState } from "react";
 import { PositionMap } from "../type/position";
+import { getPosition } from "../utils/screenPositions/setup_table";
 
 export const SetupTable = () => {
   const [gameStarted, setGameStarted] = useState<boolean>(false); // dummy state to simulate game starting
@@ -46,15 +47,19 @@ export const SetupTable = () => {
           })}
         </View>
       ) : (
-        <View className="flex flex-3 flex-row flex-wrap gap-y-5 min-w-full mt-48">
-          {tableCards.map((card, index) => (
-            <View
-              key={index}
-              className="flex items-center justify-center w-1/3"
-            >
-              <Image className="w-16 h-24" source={card.src} />
-            </View>
-          ))}
+        <View className="relative min-w-full">
+          {tableCards.map((card, index) => {
+            const position = getPosition(index);
+            return (
+              <View
+                key={index}
+                className="absolute"
+                style={{ left: position.x, top: position.y }}
+              >
+                <Image className="w-16 h-24" source={card.src} />
+              </View>
+            );
+          })}
         </View>
       )}
     </View>
