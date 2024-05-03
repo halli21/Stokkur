@@ -1,6 +1,6 @@
 import { TouchableOpacity, View, Text } from "react-native";
 import { PlayerHand } from "../components/player_hand";
-import { DiscardPile } from "./discardPile";
+import { DiscardPile } from "./discard_pile";
 import { RootState } from "../context/store";
 import { useSelector, useDispatch } from "react-redux";
 import { shuffleDeck, drawCard } from "../context/reducers/gameSlice";

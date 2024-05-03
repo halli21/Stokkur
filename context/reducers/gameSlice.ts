@@ -37,11 +37,7 @@ export const gameSlice = createSlice({
     playCard(state: GameState, action: PayloadAction<CardType>) {
       const latestCards = getLastFourCards(state.discardPile);
       const cardToPlay = action.payload;
-
       const playable = canPlayCard(cardToPlay, latestCards);
-
-      console.log(playable);
-
       const cardIndex = state.currentHand.findIndex(
         (card) => card.id === cardToPlay.id
       );
@@ -53,7 +49,6 @@ export const gameSlice = createSlice({
       if (cardToPlay.rank === 10) {
         state.discardPile = [];
       } else if (state.discardPile.length > 3) {
-        console.log("checking 4 in a row");
         const bombCards = getLastFourCards(state.discardPile);
         const isBomb = checkForBomb(bombCards);
         if (isBomb) {
