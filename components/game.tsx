@@ -3,7 +3,7 @@ import { PlayerHand } from "../components/player_hand";
 import { DiscardPile } from "./discardPile";
 import { RootState } from "../context/store";
 import { useSelector, useDispatch } from "react-redux";
-import { shuffleDeck, drawCard } from "../context/reducers/gameSlice";
+import { startGame, drawCard } from "../context/reducers/gameSlice";
 import { useEffect } from "react";
 import { SetupTable } from "./setup_table";
 
@@ -12,8 +12,9 @@ export const Game = () => {
   const currentHand = useSelector((state: RootState) => state.game.currentHand);
 
   useEffect(() => {
-    dispatch(shuffleDeck());
-  });
+    dispatch(startGame());
+  }, []);
+  // remember empty dependecy array!
 
   return (
     <View className="h-full bg-custom-blue flex justify-center items-center">
@@ -26,6 +27,7 @@ export const Game = () => {
         <Text className="text-white">Draw</Text>
       </TouchableOpacity>
       <PlayerHand hand={currentHand} />
+      <Text>{currentHand.length}</Text>
 
       <SetupTable />
     </View>

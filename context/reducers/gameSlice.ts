@@ -9,6 +9,7 @@ import { getLastFourCards } from "../../utils/cards";
 interface GameState {
   deck: CardType[];
   currentHand: CardType[];
+  tableCards: CardType[];
   selectedCards: CardType[];
   discardPile: CardType[];
 }
@@ -16,6 +17,7 @@ interface GameState {
 const initialState: GameState = {
   deck: Deck,
   currentHand: [],
+  tableCards: [],
   selectedCards: [],
   discardPile: [],
 };
@@ -25,6 +27,13 @@ export const gameSlice = createSlice({
   initialState,
 
   reducers: {
+    startGame(state: GameState) {
+      state.deck = shuffleArray([...state.deck]);
+      const drawHand = state.deck.splice(0, 3);
+      const drawTableCards = state.deck.splice(0, 6);
+      state.currentHand.push(...drawHand);
+      state.tableCards.push(...drawTableCards);
+    },
     drawCard(state: GameState) {
       if (state.deck.length > 0) {
         const nextCard = state.deck.shift();
@@ -37,11 +46,7 @@ export const gameSlice = createSlice({
     playCard(state: GameState, action: PayloadAction<CardType>) {
       const latestCards = getLastFourCards(state.discardPile);
       const cardToPlay = action.payload;
-
       const playable = canPlayCard(cardToPlay, latestCards);
-
-      console.log(playable);
-
       const cardIndex = state.currentHand.findIndex(
         (card) => card.id === cardToPlay.id
       );
@@ -53,7 +58,6 @@ export const gameSlice = createSlice({
       if (cardToPlay.rank === 10) {
         state.discardPile = [];
       } else if (state.discardPile.length > 3) {
-        console.log("checking 4 in a row");
         const bombCards = getLastFourCards(state.discardPile);
         const isBomb = checkForBomb(bombCards);
         if (isBomb) {
@@ -92,6 +96,7 @@ export const gameSlice = createSlice({
 });
 
 export const {
+  startGame,
   drawCard,
   playCard,
   selectCard,

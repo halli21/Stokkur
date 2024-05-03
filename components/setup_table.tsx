@@ -1,48 +1,8 @@
-import { View, Image, Dimensions, Text } from "react-native";
-import { CardType } from "../type/card";
+import { View, Image, Text, TouchableOpacity } from "react-native";
 import { SwitchDrag } from "./switch_drag";
 import { useSharedValue } from "react-native-reanimated";
-
-const path = "../assets/cardImages";
-
-const tableCards: CardType[] = [
-  {
-    id: "AC",
-    rank: 14,
-    suit: "C",
-    src: require(path + "/AC.png"),
-  },
-  {
-    id: "AD",
-    rank: 14,
-    suit: "D",
-    src: require(path + "/AD.png"),
-  },
-  {
-    id: "AH",
-    rank: 14,
-    suit: "H",
-    src: require(path + "/AH.png"),
-  },
-  {
-    id: "KC",
-    rank: 13,
-    suit: "C",
-    src: require(path + "/KC.png"),
-  },
-  {
-    id: "KD",
-    rank: 13,
-    suit: "D",
-    src: require(path + "/KD.png"),
-  },
-  {
-    id: "KH",
-    rank: 13,
-    suit: "H",
-    src: require(path + "/KH.png"),
-  },
-];
+import { useSelector } from "react-redux";
+import { RootState } from "../context/store";
 
 const arr = new Array(6).fill("").map((_, i) => i);
 
@@ -51,8 +11,19 @@ export const SetupTable = () => {
     Object.assign({}, ...arr.map((item) => ({ [item]: item })))
   );
 
+  const tableCards = useSelector((state: RootState) => state.game.tableCards);
+
+  function handlePress() {
+    console.log("i have started game");
+  }
+
   return (
-    <View className="min-w-full mt-48">
+    <View className="min-w-full mt-30">
+      <TouchableOpacity onPress={handlePress}>
+        <View className="w-24 h-16 bg-green-600">
+          <Text>Start Game Type shi</Text>
+        </View>
+      </TouchableOpacity>
       {tableCards.map((item, index) => {
         return (
           <View key={index}>
