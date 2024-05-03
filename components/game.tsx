@@ -18,19 +18,16 @@ export const Game = () => {
 
   return (
     <View className="h-full bg-custom-blue flex justify-center items-center">
-      <SetupTable />
+      <DiscardPile />
+      <TouchableOpacity
+        className="bg-black
+px-10 py-5 rounded-lg"
+        onPress={() => dispatch(drawCard())}
+      >
+        <Text className="text-white">Draw</Text>
+      </TouchableOpacity>
+      <PlayerHand hand={currentHand} />
+      <Text>{currentHand.length}</Text>
     </View>
   );
 };
-
-
-// <DiscardPile />
-// <TouchableOpacity
-//   className="bg-black
-// px-10 py-5 rounded-lg"
-//   onPress={() => dispatch(drawCard())}
-// >
-//   <Text className="text-white">Draw</Text>
-// </TouchableOpacity>
-// <PlayerHand hand={currentHand} />
-// <Text>{currentHand.length}</Text>
