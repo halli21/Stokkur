@@ -5,6 +5,7 @@ import shuffleArray from "../../utils/cards/shuffleArray";
 import sortCards from "../../utils/cards/sortCards";
 import { canPlayCard, checkForBomb } from "../../utils/gameRules";
 import { getLastFourCards } from "../../utils/cards";
+import { PositionMap } from "../../type/position";
 
 interface GameState {
   deck: CardType[];
@@ -33,6 +34,19 @@ export const gameSlice = createSlice({
       const drawTableCards = state.deck.splice(0, 6);
       state.currentHand.push(...drawHand);
       state.tableCards.push(...drawTableCards);
+    },
+    setTableCardsPositions(
+      state: GameState,
+      action: PayloadAction<PositionMap>
+    ) {
+      // TODO: May need relocate this later
+      const newOrder = new Array(state.tableCards.length);
+
+      Object.entries(action.payload).forEach(([key, value]) => {
+        newOrder[value] = state.tableCards[parseInt(key)];
+      });
+
+      state.tableCards = newOrder;
     },
     drawCard(state: GameState) {
       if (state.deck.length > 0) {
@@ -97,6 +111,7 @@ export const gameSlice = createSlice({
 
 export const {
   startGame,
+  setTableCardsPositions,
   drawCard,
   playCard,
   selectCard,

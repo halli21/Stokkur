@@ -14,22 +14,23 @@ export const Game = () => {
   useEffect(() => {
     dispatch(startGame());
   }, []);
-  // remember empty dependecy array!
+  // remember empty dependency array!
 
   return (
     <View className="h-full bg-custom-blue flex justify-center items-center">
-      <DiscardPile />
-      <TouchableOpacity
-        className="bg-black
-    px-10 py-5 rounded-lg"
-        onPress={() => dispatch(drawCard())}
-      >
-        <Text className="text-white">Draw</Text>
-      </TouchableOpacity>
-      <PlayerHand hand={currentHand} />
-      <Text>{currentHand.length}</Text>
-
       <SetupTable />
     </View>
   );
 };
+
+
+// <DiscardPile />
+// <TouchableOpacity
+//   className="bg-black
+// px-10 py-5 rounded-lg"
+//   onPress={() => dispatch(drawCard())}
+// >
+//   <Text className="text-white">Draw</Text>
+// </TouchableOpacity>
+// <PlayerHand hand={currentHand} />
+// <Text>{currentHand.length}</Text>

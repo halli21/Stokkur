@@ -1,38 +1,62 @@
 import { View, Image, Text, TouchableOpacity } from "react-native";
 import { SwitchDrag } from "./switch_drag";
 import { useSharedValue } from "react-native-reanimated";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../context/store";
-
-const arr = new Array(6).fill("").map((_, i) => i);
+import { setTableCardsPositions } from "../context/reducers/gameSlice";
+import { useState } from "react";
+import { PositionMap } from "../type/position";
 
 export const SetupTable = () => {
-  const positions = useSharedValue(
+  const [gameStarted, setGameStarted] = useState<boolean>(false); // dummy state to simulate game starting
+
+  const dispatch = useDispatch();
+
+  const arr = Array.from({ length: 6 }, (_, i) => i);
+  const positions = useSharedValue<PositionMap>(
     Object.assign({}, ...arr.map((item) => ({ [item]: item })))
   );
 
   const tableCards = useSelector((state: RootState) => state.game.tableCards);
 
   function handlePress() {
-    console.log("i have started game");
+    dispatch(setTableCardsPositions(positions.value));
+    setGameStarted(true);
   }
 
   return (
     <View className="min-w-full mt-30">
       <TouchableOpacity onPress={handlePress}>
-        <View className="w-24 h-16 bg-green-600">
-          <Text>Start Game Type shi</Text>
+        <View className="w-24 h-16 bg-green-600 rounded-md">
+          <Text className="text-center">Dummy Start Game</Text>
         </View>
       </TouchableOpacity>
-      {tableCards.map((item, index) => {
-        return (
-          <View key={index}>
-            <SwitchDrag index={index} positions={positions}>
-              <Image className="w-16 h-24" source={item.src} />
-            </SwitchDrag>
-          </View>
-        );
-      })}
+
+      {/* simulates two seperate components, one for setting up the game and one where the game has actually started */}
+      {!gameStarted ? (
+        <View>
+          {tableCards.map((item, index) => {
+            return (
+              <View key={index}>
+                <SwitchDrag index={index} positions={positions}>
+                  <Image className="w-16 h-24" source={item.src} />
+                </SwitchDrag>
+              </View>
+            );
+          })}
+        </View>
+      ) : (
+        <View className="flex flex-3 flex-row flex-wrap gap-y-5 min-w-full mt-48">
+          {tableCards.map((card, index) => (
+            <View
+              key={index}
+              className="flex items-center justify-center w-1/3"
+            >
+              <Image className="w-16 h-24" source={card.src} />
+            </View>
+          ))}
+        </View>
+      )}
     </View>
   );
 };
