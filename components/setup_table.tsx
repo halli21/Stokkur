@@ -1,6 +1,7 @@
-import { View, Image } from "react-native";
+import { View, Image, Dimensions, Text } from "react-native";
 import { CardType } from "../type/card";
 import { SwitchDrag } from "./switch_drag";
+import { useSharedValue } from "react-native-reanimated";
 
 const path = "../assets/cardImages";
 
@@ -43,14 +44,20 @@ const tableCards: CardType[] = [
   },
 ];
 
+const arr = new Array(6).fill("").map((_, i) => i);
+
 export const SetupTable = () => {
+  const positions = useSharedValue(
+    Object.assign({}, ...arr.map((item) => ({ [item]: item })))
+  );
+
   return (
-    <View className="flex flex-3 flex-row flex-wrap gap-y-5 bg-black min-w-full mt-8">
-      {tableCards.map((card, index) => {
+    <View className="min-w-full mt-48">
+      {tableCards.map((item, index) => {
         return (
-          <View key={index} className="flex items-center justify-center w-1/3">
-            <SwitchDrag>
-              <Image className="w-16 h-24" source={card.src} />
+          <View key={index}>
+            <SwitchDrag index={index} positions={positions}>
+              <Image className="w-16 h-24" source={item.src} />
             </SwitchDrag>
           </View>
         );

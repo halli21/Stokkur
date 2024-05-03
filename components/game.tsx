@@ -5,7 +5,6 @@ import { RootState } from "../context/store";
 import { useSelector, useDispatch } from "react-redux";
 import { shuffleDeck, drawCard } from "../context/reducers/gameSlice";
 import { useEffect } from "react";
-
 import { SetupTable } from "./setup_table";
 
 export const Game = () => {
@@ -18,19 +17,17 @@ export const Game = () => {
 
   return (
     <View className="h-full bg-custom-blue flex justify-center items-center">
+      <DiscardPile />
+      <TouchableOpacity
+        className="bg-black
+    px-10 py-5 rounded-lg"
+        onPress={() => dispatch(drawCard())}
+      >
+        <Text className="text-white">Draw</Text>
+      </TouchableOpacity>
+      <PlayerHand hand={currentHand} />
+
       <SetupTable />
-     
     </View>
   );
 };
-
-
-{/* <DiscardPile />
-<TouchableOpacity
-  className="bg-black
-    px-10 py-5 rounded-lg"
-  onPress={() => dispatch(drawCard())}
->
-  <Text className="text-white">Draw</Text>
-</TouchableOpacity>
-<PlayerHand hand={currentHand} /> */}
