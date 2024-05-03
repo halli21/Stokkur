@@ -35,6 +35,7 @@ export const gameSlice = createSlice({
       state.currentHand.push(...drawHand);
       state.tableCards.push(...drawTableCards);
     },
+    // Used in setup table, recieves a mapping of the new indexes of the cards, before game starts this needs to be set
     setTableCardsPositions(
       state: GameState,
       action: PayloadAction<PositionMap>
