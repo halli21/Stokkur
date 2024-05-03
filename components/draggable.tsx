@@ -1,51 +1,60 @@
-import React, { useEffect, useRef, useState } from "react";
+import Animated, {
+  useAnimatedGestureHandler,
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
+} from "react-native-reanimated";
 import {
-  Animated,
-  PanResponder,
-  StyleSheet,
-  UIManager,
-  View,
-  findNodeHandle,
-} from "react-native";
+  PanGestureHandler,
+  PanGestureHandlerGestureEvent,
+} from "react-native-gesture-handler";
 
 interface DraggableProps {
   children: React.ReactNode;
 }
 
-export const DraggableComponent = ({ children }: DraggableProps) => {
-  const componentRef = useRef(null);
-  const pan = useRef(new Animated.ValueXY()).current;
+type ContextType = {
+  startX: number;
+  startY: number;
+};
 
-  const panResponder = useRef(
-    PanResponder.create({
-      onMoveShouldSetPanResponder: () => true,
-      onMoveShouldSetPanResponderCapture: (evt, gestureState) => {
-        return gestureState.dx != 0 && gestureState.dy != 0;
-      },
-      onPanResponderMove: Animated.event([null, { dx: pan.x, dy: pan.y }], {
-        useNativeDriver: false,
-      }),
-      onPanResponderRelease: (_, gesture) => {
-        const handle = findNodeHandle(componentRef.current);
-        if (handle) {
-          UIManager.measure(handle, (x, y, width, height, pageX, pageY) => {
-            Animated.spring(pan, {
-              toValue: { x: 0, y: 0 },
-              useNativeDriver: false,
-            }).start();
-          });
-        }
-      },
-    })
-  ).current;
+export const DraggableComponent = ({ children }: DraggableProps) => {
+  const translateX = useSharedValue(0);
+  const translateY = useSharedValue(0);
+
+  const panGesture = useAnimatedGestureHandler<
+    PanGestureHandlerGestureEvent,
+    ContextType
+  >({
+    onStart: (_, ctx) => {
+      ctx.startX = translateX.value;
+      ctx.startY = translateY.value;
+    },
+    onActive: (evt, ctx) => {
+      translateX.value = ctx.startX + evt.translationX;
+      translateY.value = ctx.startY + evt.translationY;
+    },
+    onEnd: () => {
+      translateX.value = withTiming(0);
+      translateY.value = withTiming(0);
+    },
+    onFinish: () => {},
+  });
+
+  const animatedStyle = useAnimatedStyle(() => {
+    return {
+      transform: [
+        { translateX: translateX.value },
+        { translateY: translateY.value },
+      ],
+    };
+  });
 
   return (
-    <Animated.View
-      style={pan.getLayout()}
-      ref={componentRef}
-      {...panResponder.panHandlers}
-    >
-      {children}
+    <Animated.View style={animatedStyle}>
+      <PanGestureHandler onGestureEvent={panGesture}>
+        <Animated.View>{children}</Animated.View>
+      </PanGestureHandler>
     </Animated.View>
   );
 };
