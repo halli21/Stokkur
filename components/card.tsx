@@ -8,12 +8,19 @@ import { selectCard } from "../context/reducers/gameSlice";
 
 import { DraggableComponent } from "./draggable";
 
+import { Dimensions } from "react-native";
+
 interface CardProps {
   card: CardType;
   index: number;
 }
 
 export const Card = ({ card, index }: CardProps) => {
+  const WINDOW_WIDTH = Dimensions.get("window").width;
+
+  const discardPileX = WINDOW_WIDTH / 2;
+  const discardPileY = 100;
+
   const dispatch = useDispatch();
   const selectedCards = useSelector(
     (state: RootState) => state.game.selectedCards
@@ -25,7 +32,9 @@ export const Card = ({ card, index }: CardProps) => {
   return (
     <View>
       {isSelected ? (
-        <DraggableComponent>
+        <DraggableComponent
+          discardPilePos={{ x: discardPileX, y: discardPileY }}
+        >
           <TouchableOpacity
             onPress={() => dispatch(selectCard(card))}
             className={`border-2 border-transparent rounded-md mt-3 ${

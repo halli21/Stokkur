@@ -21,7 +21,7 @@ export const Game = () => {
       <DiscardPile />
       <TouchableOpacity
         className="bg-black
-px-10 py-5 rounded-lg"
+px-10 py-5 rounded-lg mt-64"
         onPress={() => dispatch(drawCard())}
       >
         <Text className="text-white">Draw</Text>
