@@ -53,12 +53,26 @@ export const DraggableComponent = ({
       translateX.value = ctx.startX + evt.translationX;
       translateY.value = ctx.startY + evt.translationY;
     },
-    onEnd: (_, ctx) => {
+    onEnd: (evt, ctx) => {
       const destinationX = discardPilePos.x - ctx.pageX;
       const destinationY = discardPilePos.y - ctx.pageY;
 
-      translateX.value = withTiming(destinationX);
-      translateY.value = withTiming(destinationY);
+      const finalX = ctx.pageX + evt.translationX;
+      const finalY = ctx.pageY + evt.translationY;
+
+      const dummySize = 50;
+
+      if (
+        finalX > discardPilePos.x - dummySize &&
+        finalX < discardPilePos.x + dummySize &&
+        finalY > discardPilePos.y - dummySize &&
+        finalY < discardPilePos.y + dummySize
+      ) {
+        console.log("in dummy drop zone");
+      }
+
+      translateX.value = withTiming(0);
+      translateY.value = withTiming(0);
     },
     onFinish: () => {},
   });
