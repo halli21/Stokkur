@@ -27,13 +27,7 @@ export const Game = () => {
   const [mostRecentlyPlayedCard, setMostRecentlyPlayedCard] =
     useState<CardType | null>(null);
 
-  const handleCardPlayed = () => {
-    const card: CardType = {
-      id: "AC",
-      rank: 14,
-      suit: "C",
-      src: require(path + "/AC.png"),
-    };
+  const handleCardPlayed = (card: CardType) => {
     console.log("Playing card:", card);
     setDiscardPile([...discardPile, card]);
     setMostRecentlyPlayedCard(card);
@@ -59,12 +53,13 @@ export const Game = () => {
         )}
       </View>
 
-      <View className="flex flex-row gap-x-3">
+      <View className="flex flex-row gap-x-20">
         {hand.map((card, index) => (
           <View key={index}>
             <TestDrag
+              key={card.id}
               discardPilePos={{ x: discardPileX, y: discardPileY }}
-              onCardPlayed={handleCardPlayed}
+              onCardPlayed={() => handleCardPlayed(card)}
             >
               <Image className="w-16 h-24" source={card.src} />
             </TestDrag>
