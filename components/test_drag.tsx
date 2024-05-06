@@ -10,12 +10,15 @@ import Animated, {
   useAnimatedStyle,
   useSharedValue,
   withTiming,
+  runOnJS
 } from "react-native-reanimated";
 import { Position } from "../type/position";
+
 
 interface DraggableProps {
   children: React.ReactNode;
   discardPilePos: Position;
+  onCardPlayed: () => void;
 }
 
 type ContextType = {
@@ -25,7 +28,7 @@ type ContextType = {
   startY: number;
 };
 
-export const TestDrag = ({ children, discardPilePos }: DraggableProps) => {
+export const TestDrag = ({ children, discardPilePos, onCardPlayed }: DraggableProps) => {
   const aref = useAnimatedRef();
   const translateX = useSharedValue(0);
   const translateY = useSharedValue(0);
@@ -69,11 +72,14 @@ export const TestDrag = ({ children, discardPilePos }: DraggableProps) => {
         finalY > discardPilePos.y - dummySize &&
         finalY < discardPilePos.y + dummySize
       ) {
-        console.log("in dummy drop zone");
+        console.log("inside")
+        runOnJS(onCardPlayed)();
+        // translateX.value = withTiming(destinationX);
+        // translateY.value = withTiming(destinationY);
+      } else {
+        translateX.value = withTiming(0);
+        translateY.value = withTiming(0);
       }
-
-      translateX.value = withTiming(0);
-      translateY.value = withTiming(0);
     },
     onFinish: () => {},
   });
